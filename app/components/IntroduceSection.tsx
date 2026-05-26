@@ -6,7 +6,7 @@ export default function IntroduceSection() {
         <Box
             as="section"
             bg="brand.bg"
-            px="8"
+            px={{ base: "10", lg: "20" }}
             py="12"
         >
             {/* セクションタイトル */}
@@ -28,7 +28,7 @@ export default function IntroduceSection() {
                 flexDirection="column"
                 alignItems="center"
                 gap="8"
-                maxW="700px"
+                maxW="800px"
                 mx="auto"
             >
                 {/* 写真 */}
