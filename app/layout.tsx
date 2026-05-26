@@ -1,17 +1,16 @@
-import { UIProvider } from "@yamada-ui/react"
-import { theme } from "./theme"
+import { Providers } from "./providers"
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="ja">
-      <body>
-        <UIProvider theme={theme}>
+      <body suppressHydrationWarning>
+        <Providers>
           {children}
-        </UIProvider>
+        </Providers>
       </body>
     </html>
   )
