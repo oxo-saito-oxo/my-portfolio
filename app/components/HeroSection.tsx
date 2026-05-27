@@ -12,9 +12,8 @@ export default function HeroSection() {
 
         const animate = (timestamp: number) => {
             if (!startTime) startTime = timestamp
-            const elapsed = (timestamp - startTime) % 1500   // 1.5秒で1周期
-            const progress = elapsed / 1500                   // 0〜1 の進捗
-            // sin波で上下に動かす（0px → 12px → 0px）
+            const elapsed = (timestamp - startTime) % 1500
+            const progress = elapsed / 1500
             const y = 12 * Math.sin(progress * Math.PI * 2)
 
             if (arrowRef.current) {
@@ -26,7 +25,6 @@ export default function HeroSection() {
 
         animationId = requestAnimationFrame(animate)
 
-        // クリーンアップ：コンポーネントがアンマウントされたら停止
         return () => cancelAnimationFrame(animationId)
     }, [])
 
@@ -45,14 +43,13 @@ export default function HeroSection() {
             <Heading
                 as="h1"
                 color="brand.text"
-                fontSize={{ base: "5xl", md: "8xl" }}
+                fontSize={{ base: "3xl", sm: "5xl", md: "8xl" }}
                 fontWeight="bold"
                 letterSpacing="widest"
             >
                 PORTFOLIO
             </Heading>
 
-            {/* requestAnimationFrameでJS直接アニメーション */}
             <div
                 ref={arrowRef}
                 style={{ color: "#3A5199", cursor: "pointer" }}

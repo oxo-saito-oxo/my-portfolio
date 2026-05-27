@@ -3,43 +3,31 @@
 import { Box, Heading, Text, Flex } from "@yamada-ui/react"
 
 export default function ContactSection() {
-    
-    // 【絶対安全ロジック】mailtoを廃止し、Gmailの新規作成画面を別タブで強制突破します
     const handleEmailClick = () => {
-        // 🚨 your-email@example.com の部分をご自身のメールアドレス（すべて半角）に書き換えてください
         const email = "s2422013@stu.musashino-u.ac.jp"
-        
-        // Gmailの新規作成画面に直接宛先をセットして開くURL
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`
-        
-        // 別タブで安全に起動（Next.jsのルーターは100%介入できません）
         window.open(gmailUrl, "_blank", "noopener,noreferrer")
     }
 
     return (
         <Box as="section" bg="#2F2E33" py="16" w="full">
-            {/* 共通の統一コンテナ */}
             <Box maxW="800px" mx="auto" w="full" px="6">
-
-                {/* セクションタイトル */}
                 <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
                     <Heading as="h2" color="brand.accent" fontSize="2xl" fontWeight="bold" letterSpacing="widest">
                         CONTACT
                     </Heading>
                 </Box>
 
-                {/* メッセージ */}
                 <Box mb="12" textAlign="center">
                     <Text color="brand.text" fontSize="lg" fontWeight="bold" mb="2">
-                        お気軽に繋がってください！
+                        お気軽にお声がけください！
                     </Text>
                     <Text color="brand.sub" fontSize="sm" lineHeight="tall">
-                        インターンシップのお誘いや、カジュアルな面談など、<br />
+                        インターンシップのお誘いや、カジュアル面談など、<br />
                         下記のリンクよりご連絡をお待ちしております。
                     </Text>
                 </Box>
 
-                {/* アイコン全体をページの真ん中に配置するコンテナ */}
                 <Flex 
                     justifyContent="center" 
                     alignItems="center" 
@@ -130,7 +118,6 @@ export default function ContactSection() {
                             W
                         </Text>
                     </Flex>
-
                 </Flex>
             </Box>
         </Box>
