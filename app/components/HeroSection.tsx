@@ -1,8 +1,35 @@
-"use client" // アニメーションなどを使うときに必要
+"use client"
 
+import { useEffect, useRef } from "react"
 import { Box, Heading, ChevronDownIcon } from "@yamada-ui/react"
 
 export default function HeroSection() {
+    const arrowRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        let startTime: number | null = null
+        let animationId: number
+
+        const animate = (timestamp: number) => {
+            if (!startTime) startTime = timestamp
+            const elapsed = (timestamp - startTime) % 1500   // 1.5秒で1周期
+            const progress = elapsed / 1500                   // 0〜1 の進捗
+            // sin波で上下に動かす（0px → 12px → 0px）
+            const y = 12 * Math.sin(progress * Math.PI * 2)
+
+            if (arrowRef.current) {
+                arrowRef.current.style.transform = `translateY(${y}px)`
+            }
+
+            animationId = requestAnimationFrame(animate)
+        }
+
+        animationId = requestAnimationFrame(animate)
+
+        // クリーンアップ：コンポーネントがアンマウントされたら停止
+        return () => cancelAnimationFrame(animationId)
+    }, [])
+
     return (
         <Box
             as="section"
@@ -24,13 +51,14 @@ export default function HeroSection() {
             >
                 PORTFOLIO
             </Heading>
-            <Box
-                color="brand.accent"
-                style={{ animation: "bounce 2s ease-in-out infinite" }}
-                cursor="pointer"
+
+            {/* requestAnimationFrameでJS直接アニメーション */}
+            <div
+                ref={arrowRef}
+                style={{ color: "#3A5199", cursor: "pointer" }}
             >
                 <ChevronDownIcon boxSize="10" />
-            </Box>
+            </div>
         </Box>
     )
 }

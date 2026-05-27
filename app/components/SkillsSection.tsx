@@ -20,7 +20,7 @@ const skills = [
         description: "大学のデータサイエンスの講義やゼミで使用。データ分析の基礎知識があります。"
     },
     {
-        name: "Next.js / React",
+        name: "React",
         percentage: 30,
         description: "このポートフォリオ作成に使用。Webフロントエンドの仕組みを学習中です。"
     },
