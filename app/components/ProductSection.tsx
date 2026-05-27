@@ -1,5 +1,6 @@
 import { Box, Heading, Text, Flex, Image, Badge } from "@yamada-ui/react"
 import Link from "next/link"
+import nextConfig from "../../next.config"
 
 const products = [
     {
@@ -42,7 +43,8 @@ const products = [
 export default function ProductsSection() {
     return (
         <Box as="section" bg="#2F2E33" py="12" w="full" overflow="hidden">
-            <Box maxW="800px" mx="auto" w="full" px="6">                <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
+            <Box maxW="800px" mx="auto" w="full" px="6">
+                <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
                     <Heading as="h2" color="brand.accent" fontSize="2xl" fontWeight="bold" letterSpacing="widest">
                         PRODUCTS
                     </Heading>
@@ -58,7 +60,7 @@ export default function ProductsSection() {
                     css={{
                         "&::-webkit-scrollbar": { display: "none" },
                         "scrollbarWidth": "none",
-                        "scrollSnapType": "x mandatory", // 詳細画面と同じくピタッと止まる心地よさを追加
+                        "scrollSnapType": "x mandatory",
                     }}
                 >
                     {products.map((product) => (
@@ -82,19 +84,14 @@ export default function ProductsSection() {
                                 h="full"
                                 display="flex"
                                 flexDirection="column"
-                                /* 【ここが最重要】
-                                   スマホ画面でもPC画面でも、カードの横幅を「280px」に完全固定します。
-                                   flexShrink={0} によって、画面が狭くなっても絶対に潰れません。
-                                */
                                 w="280px" 
                                 flexShrink={0}
                                 cursor="pointer"
                                 css={{ "scrollSnapAlign": "start" }}
                             >
-                                {/* 上部：写真領域 */}
                                 <Box w="full" h="180px" overflow="hidden">
                                     <Image
-                                        src={product.image}
+                                        src={`${nextConfig.basePath || ''}${product.image}`}
                                         alt={product.title}
                                         w="full"
                                         h="full"
@@ -104,7 +101,6 @@ export default function ProductsSection() {
                                     />
                                 </Box>
 
-                                {/* 下部：テキスト領域 */}
                                 <Box p="5" flexGrow={1}>
                                     <Flex gap="2" mb="3" flexWrap="wrap">
                                         {product.tags.map(tag => (
