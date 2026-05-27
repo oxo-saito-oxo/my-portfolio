@@ -1,13 +1,13 @@
-import { Box, Heading, Text, Flex, Image, Badge, Link } from "@yamada-ui/react"
+import { Box, Heading, Text, Flex, Image, Badge } from "@yamada-ui/react"
+import Link from "next/link"
 
-// プロダクトデータ（ここを増減させるだけでOK）
 const products = [
     {
         id: "singalyzar",
         title: "Singalyzar",
         description: "第1回MUDSハッカソンで作成。カラオケで歌いやすいキーの提案を行うwebアプリ。",
         image: "/Singalyzer.png",
-        tags: [" React", "Supabase", "Python"],
+        tags: ["React", "Supabase", "Python"],
     },
     {
         id: "MyFitCoach",
@@ -17,7 +17,7 @@ const products = [
         tags: ["ReactNative", "TypeScript"],
     },
     {
-        id: "待ちあわせ",
+        id: "machiawase",
         title: "待ちあわせアプリ",
         description: "第2回MUDSハッカソンで作成。優秀賞をいただいたプロダクト。近くにいる人との待ち合わせをもっと簡単に。",
         image: "/machiawase3.png",
@@ -41,42 +41,34 @@ const products = [
 
 export default function ProductsSection() {
     return (
-        <Box as="section" bg="#2F2E33" py="12" w="full">
-            {/* 共通の統一コンテナ（他セクションと位置を完全に合わせる） */}
-            <Box maxW="800px" mx="auto" w="full" px="6">
-
-                {/* セクションタイトル */}
-                <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
+        <Box as="section" bg="#2F2E33" py="12" w="full" overflow="hidden">
+            <Box maxW="800px" mx="auto" w="full" px="6">                <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
                     <Heading as="h2" color="brand.accent" fontSize="2xl" fontWeight="bold" letterSpacing="widest">
                         PRODUCTS
                     </Heading>
                 </Box>
-
-                {/* カード一覧エリア 
-                    base (スマホ): 横スクロール
-                    md (PC): グリッド配置
-                */}
                 <Flex
+                    display="flex"
+                    flexDirection="row"
+                    flexWrap="nowrap" 
                     gap="6"
-                    overflowX={{ base: "auto", md: "visible" }}
-                    pb={{ base: "4", md: "0" }}
-                    display={{ base: "flex", md: "grid" }}
-                    gridTemplateColumns={{ md: "repeat(2, 1fr)" }} // PCでは2列、3枚なら3列に調整も可能
+                    overflowX="auto"
+                    pb="4"
+                    w="full"
                     css={{
                         "&::-webkit-scrollbar": { display: "none" },
                         "scrollbarWidth": "none",
-        }}
+                        "scrollSnapType": "x mandatory", // 詳細画面と同じくピタッと止まる心地よさを追加
+                    }}
                 >
                     {products.map((product) => (
                         <Link
                             key={product.id}
-                            href={`/products/${product.id}`} // 詳細画面へのパス（Next.jsのApp Router想定）
-                            style={{ textDecoration: "none" }}
-                            w={{ base: "280px", md: "full" }} // スマホではカード幅を固定して横スクロールさせる
-                            flexShrink={0}
+                            href={`/products/${product.id}`}
+                            style={{ textDecoration: "none", display: "block" }}
                         >
                             <Box
-                                bg="#3A393F" // 背景より少し明るいグレーでカードを浮き立たせる
+                                bg="#3A393F" 
                                 borderRadius="2xl"
                                 overflow="hidden"
                                 transition="all 0.3s"
@@ -90,9 +82,17 @@ export default function ProductsSection() {
                                 h="full"
                                 display="flex"
                                 flexDirection="column"
+                                /* 【ここが最重要】
+                                   スマホ画面でもPC画面でも、カードの横幅を「280px」に完全固定します。
+                                   flexShrink={0} によって、画面が狭くなっても絶対に潰れません。
+                                */
+                                w="280px" 
+                                flexShrink={0}
+                                cursor="pointer"
+                                css={{ "scrollSnapAlign": "start" }}
                             >
-                                {/* 上部：写真領域（アスペクト比を固定） */}
-                                <Box w="full" h="200px" overflow="hidden">
+                                {/* 上部：写真領域 */}
+                                <Box w="full" h="180px" overflow="hidden">
                                     <Image
                                         src={product.image}
                                         alt={product.title}
@@ -105,7 +105,7 @@ export default function ProductsSection() {
                                 </Box>
 
                                 {/* 下部：テキスト領域 */}
-                                <Box p="6" flexGrow={1}>
+                                <Box p="5" flexGrow={1}>
                                     <Flex gap="2" mb="3" flexWrap="wrap">
                                         {product.tags.map(tag => (
                                             <Badge key={tag} variant="outline" colorScheme="blue" fontSize="2xs" borderRadius="full" px="2">
@@ -114,15 +114,15 @@ export default function ProductsSection() {
                                         ))}
                                     </Flex>
                                     
-                                    <Heading as="h3" color="brand.text" fontSize="xl" mb="2" fontWeight="bold">
+                                    <Heading as="h3" color="brand.text" fontSize="lg" mb="2" fontWeight="bold">
                                         {product.title}
                                     </Heading>
                                     
-                                    <Text color="brand.sub" fontSize="sm" lineHeight="tall">
+                                    <Text color="brand.sub" fontSize="xs" lineHeight="tall">
                                         {product.description}
                                     </Text>
                                     
-                                    <Text color="brand.accent" fontSize="xs" mt="4" fontWeight="bold" textAlign="right">
+                                    <Text color="brand.accent" fontSize="2xs" mt="4" fontWeight="bold" textAlign="right">
                                         VIEW DETAIL →
                                     </Text>
                                 </Box>
@@ -130,6 +130,10 @@ export default function ProductsSection() {
                         </Link>
                     ))}
                 </Flex>
+                
+                <Text color="brand.sub" fontSize="2xs" mt="2" textAlign="center" fontStyle="italic" display={{ base: "block", md: "none" }}>
+                    ← Swipe to view more projects →
+                </Text>
             </Box>
         </Box>
     )
