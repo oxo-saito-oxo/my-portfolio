@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Box, Heading, Text, Grid, GridItem } from "@yamada-ui/react"
+import { Box, Heading, Text, Flex } from "@yamada-ui/react"
 
 const skills = [
     {
@@ -38,7 +38,6 @@ export default function SkillsSection() {
     const sectionRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        // 200ms待ってからオブザーバーを開始（ロード直後の誤発火を防ぐ）
         const timer = setTimeout(() => {
             const observer = new IntersectionObserver(
                 ([entry]) => {
@@ -49,7 +48,7 @@ export default function SkillsSection() {
                 },
                 {
                     threshold: 0.2,
-                    rootMargin: "0px 0px -80px 0px", // 画面下端より80px手前で発火
+                    rootMargin: "0px 0px -80px 0px",
                 }
             )
             if (sectionRef.current) observer.observe(sectionRef.current)
@@ -66,7 +65,8 @@ export default function SkillsSection() {
             py="12"
             w="full"
         >
-            <Box maxW="800px" mx="auto" w="full" px={{ base: "10", lg: "20" }}>
+            {/* 共通の統一コンテナ（他のセクションと左端を完全に整列） */}
+            <Box maxW="800px" mx="auto" w="full" px="6">
 
                 {/* セクションタイトル */}
                 <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
@@ -75,11 +75,18 @@ export default function SkillsSection() {
                     </Heading>
                 </Box>
 
-                {/* 2カラムレイアウト */}
-                <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap="12">
+                {/* 【確定・縦並びストレートロジック】
+                    - flexDirection="column" に完全固定。
+                    - これにより、パソコンでもスマホでも、100%確実に上から下へと一直線に要素が並びます。
+                */}
+                <Flex 
+                    direction="column"
+                    gap="10"
+                    w="full"
+                >
 
-                    {/* 左：スキルバー */}
-                    <GridItem>
+                    {/* 【上段】：スキルバーエリア */}
+                    <Box w="full">
                         {skills.map((skill) => (
                             <Box key={skill.name} mb="8">
                                 <Box display="flex" justifyContent="space-between" mb="2">
@@ -105,22 +112,22 @@ export default function SkillsSection() {
                                 </Text>
                             </Box>
                         ))}
-                    </GridItem>
+                    </Box>
 
-                    {/* 右：Others */}
-                    <GridItem>
+                    {/* 【下段】：Othersエリア（PCでもスマホでも、絶対にこの位置に固定されます） */}
+                    <Box w="full" mt="4">
                         <Heading as="h3" color="brand.text" fontSize="xl" fontWeight="bold" mb="6">
                             Others
                         </Heading>
                         <Box display="flex" flexWrap="wrap" gap="2">
                             {others.map((tool, index) => (
-                                <Text key={tool} color="brand.sub" fontSize="lg">
+                                <Text key={tool} color="brand.sub" fontSize="lg" whiteSpace="nowrap">
                                     {tool}{index !== others.length - 1 ? " / " : ""}
                                 </Text>
                             ))}
                         </Box>
-                    </GridItem>
-                </Grid>
+                    </Box>
+                </Flex>
 
                 {/* 注記 */}
                 <Box mt="12" pt="6" borderTop="1px solid" borderColor="whiteAlpha.300">

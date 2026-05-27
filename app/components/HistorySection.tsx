@@ -5,21 +5,6 @@ const histories = [
     { date: "2022.07", title: "学校法人角川ドワンゴ学園 N高等学校 転入学" },
     { date: "2023.03", title: "学校法人角川ドワンゴ学園 N高等学校 卒業" },
     { date: "2024.04", title: "武蔵野大学 データサイエンス学部データサイエンス学科 入学" },
-    {
-        date: "2025.07.05",
-        title: "第1回MUDSハッカソン 出場",
-        description: "賞は取れなかったものの、初めてのチーム開発、アプリ開発でもっとアプリ開発をしてみたいと思うきっかけになりました。"
-    },
-    {
-        date: "2025.07.27",
-        title: "技育CAMPハッカソン Vol.8 出場",
-        description: "初めての学外のハッカソンでReactNativeを用いたモバイルアプリの開発に挑戦しました。"
-    },
-    {
-        date: "2025.12",
-        title: "第2回MUDSハッカソン 出場",
-        description: "3回目のハッカソンにして初めて優秀賞をいただくことができました。"
-    },
     { date: "2028.03", title: "武蔵野大学 データサイエンス学部データサイエンス学科 卒業予定" }
 ]
 
@@ -32,7 +17,7 @@ export default function HistorySection() {
                 {/* セクションタイトル */}
                 <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
                     <Heading as="h2" color="brand.accent" fontSize="2xl" fontWeight="bold" letterSpacing="widest">
-                        HISTORY
+                        EDUCATIONAL BACKGROUND
                     </Heading>
                 </Box>
 
@@ -40,17 +25,20 @@ export default function HistorySection() {
                 <Box w="full">
                     {histories.map((item) => (
                         <Box key={item.date} mb="8" _last={{ mb: "0" }}>
+                            {/* 日付 */}
                             <Text color="brand.accent" fontSize="sm" mb="1" fontWeight="bold">
                                 {item.date}
                             </Text>
-                            <Heading as="h3" color="brand.text" fontSize="lg" fontWeight="bold" mb="2">
+                            
+                            {/* タイトル（学歴名） */}
+                            <Heading as="h3" color="brand.text" fontSize="lg" fontWeight="bold">
                                 {item.title}
                             </Heading>
-                            {item.description && (
-                                <Text color="brand.sub" lineHeight="tall" fontSize="md">
-                                    {item.description}
-                                </Text>
-                            )}
+                            
+                            {/* 【修正ポイント】
+                                存在しない item.description の判定文を綺麗に削除しました。
+                                これにより TypeScript の ts(2339) エラーが完全に解消されます。
+                            */}
                         </Box>
                     ))}
                 </Box>
