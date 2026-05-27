@@ -1,7 +1,6 @@
 import ProductDetail from "../../components/ProductDetail"
 import { notFound } from "next/navigation"
 
-// 【修正ポイント1】型定義の image を images: string[] に変更
 const productsData: Record<string, { title: string; summary: string; description: string; images: string[]; tags: string[] }> = {
     "singalyzar": {
         title: "Singalyzar",
@@ -40,15 +39,18 @@ const productsData: Record<string, { title: string; summary: string; description
     },
 }
 
+export async function generateStaticParams() {
+    return Object.keys(productsData).map((id) => ({
+        id: id,
+    }))
+}
+
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
-    
-    // 日本語ID対応（もしURLに日本語が混ざる場合のための保険）
     const decodedId = decodeURIComponent(id)
     const data = productsData[decodedId]
 
     if (!data) notFound()
-
-    // 展開された data の中に images 配列が含まれているため、型エラーなく渡せます
+        
     return <ProductDetail {...data} />
 }
