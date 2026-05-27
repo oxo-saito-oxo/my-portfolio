@@ -25,7 +25,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@keyframes bounce {
+@keyframes arrowBounce {
 
   0%,
   100% {
@@ -35,4 +35,8 @@ body {
   50% {
     transform: translateY(12px);
   }
+}
+
+.bounce-arrow {
+  animation: arrowBounce 1.5s ease-in-out infinite !important;
 }

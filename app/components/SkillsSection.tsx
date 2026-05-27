@@ -1,46 +1,72 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
 import { Box, Heading, Text, Grid, GridItem } from "@yamada-ui/react"
 
 const skills = [
     {
         name: "Flutter",
         percentage: 55,
-        description: "AIを活用した個人アプリ開発やハッカソンのメインツール。一番自走できる技術です。"
+        description: "趣味の個人アプリ開発やハッカソンのメインツール。一番自走できる技術です。"
     },
     {
         name: "Swift",
         percentage: 45,
-        description: "iOSネイティブ開発への興味から学習中。AIと対話しながらSwiftUIの基礎を習得しています。"
+        description: "iOSネイティブ開発への興味から学習中。SwiftUIを中心にUI構築を学んでいます。"
     },
     {
         name: "Python",
         percentage: 30,
-        description: "大学のデータサイエンスの講義やゼミで使用。データの集計や分析の基礎知識があります。"
+        description: "大学のデータサイエンスの講義やゼミで使用。データ分析の基礎知識があります。"
     },
     {
-        name: "React",
+        name: "Next.js / React",
         percentage: 30,
-        description: "ハッカソンでの使用経験に加え、本ポートフォリオのコンポーネント構築に活用しています。"
+        description: "このポートフォリオ作成に使用。Webフロントエンドの仕組みを学習中です。"
     },
     {
         name: "ReactNative",
         percentage: 20,
-        description: "学外ハッカソンでのチーム開発で使用。短期間でのアプリ形化に挑戦しました。"
+        description: "技育CAMPハッカソンで使用。短期間でのMVP実装に挑戦しました。"
     },
 ]
 
 const others = ["Firebase", "Supabase", "Figma", "Git", "GitHub"]
 
 export default function SkillsSection() {
+    const [started, setStarted] = useState(false)
+    const sectionRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        // 200ms待ってからオブザーバーを開始（ロード直後の誤発火を防ぐ）
+        const timer = setTimeout(() => {
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setStarted(true)
+                        observer.disconnect()
+                    }
+                },
+                {
+                    threshold: 0.2,
+                    rootMargin: "0px 0px -80px 0px", // 画面下端より80px手前で発火
+                }
+            )
+            if (sectionRef.current) observer.observe(sectionRef.current)
+        }, 200)
+
+        return () => clearTimeout(timer)
+    }, [])
+
     return (
         <Box
             as="section"
-            bg="#2F2E33"
+            ref={sectionRef}
+            bg="brand.bg"
             py="12"
             w="full"
-            suppressHydrationWarning // 万が一のテーマ干渉を防ぐガード
         >
-            {/* 共通の統一コンテナ */}
-            <Box maxW="800px" mx="auto" w="full" px="6">
+            <Box maxW="800px" mx="auto" w="full" px={{ base: "10", lg: "20" }}>
 
                 {/* セクションタイトル */}
                 <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
@@ -52,7 +78,7 @@ export default function SkillsSection() {
                 {/* 2カラムレイアウト */}
                 <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap="12">
 
-                    {/* 左側：スキルバー & 説明文 */}
+                    {/* 左：スキルバー */}
                     <GridItem>
                         {skills.map((skill) => (
                             <Box key={skill.name} mb="8">
@@ -60,18 +86,20 @@ export default function SkillsSection() {
                                     <Text color="brand.text" fontWeight="bold">{skill.name}</Text>
                                     <Text color="brand.text" fontSize="sm">{skill.percentage}%</Text>
                                 </Box>
-                                {/* カスタムプログレスバー */}
-                                {/* 外側：バーの背景（グレー） */}
+
+                                {/* プログレスバー */}
                                 <Box bg="whiteAlpha.200" h="8px" borderRadius="full" mb="2">
-                                    {/* 内側：塗られる部分（widthで%を指定） */}
                                     <Box
                                         bg="brand.accent"
                                         h="full"
                                         borderRadius="full"
-                                        style={{ width: `${skill.percentage}%` }}
+                                        style={{
+                                            width: started ? `${skill.percentage}%` : "0%",
+                                            transition: "width 1.2s ease-in-out",
+                                        }}
                                     />
                                 </Box>
-                                {/* スキルの補足説明 */}
+
                                 <Text color="brand.sub" fontSize="xs" lineHeight="shorter">
                                     {skill.description}
                                 </Text>
@@ -79,7 +107,7 @@ export default function SkillsSection() {
                         ))}
                     </GridItem>
 
-                    {/* 右側：Others */}
+                    {/* 右：Others */}
                     <GridItem>
                         <Heading as="h3" color="brand.text" fontSize="xl" fontWeight="bold" mb="6">
                             Others
@@ -94,7 +122,7 @@ export default function SkillsSection() {
                     </GridItem>
                 </Grid>
 
-                {/* 下部の注記 */}
+                {/* 注記 */}
                 <Box mt="12" pt="6" borderTop="1px solid" borderColor="whiteAlpha.300">
                     <Text color="brand.sub" fontSize="xs" fontStyle="italic">
                         ※数値は自己評価による現在の開発熟度（0-100%）を表しています。
