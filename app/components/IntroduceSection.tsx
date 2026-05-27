@@ -1,22 +1,19 @@
 import { Box, Heading, Text, Flex } from "@yamada-ui/react"
 import Image from "next/image"
+import profileImage from "../../public/IMG_7219.jpg"
 
 export default function IntroduceSection() {
     return (
         <Box as="section" bg="#2F2E33" py="12" w="full">
-            {/* 統一コンテナ：見出しも中身もすべてこの中に閉じ込めます */}
             <Box maxW="800px" mx="auto" w="full" px="6">
-
-                {/* セクションタイトル */}
                 <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
                     <Heading as="h2" color="brand.accent" fontSize="2xl" fontWeight="bold" letterSpacing="widest">
                         INTRODUCE
                     </Heading>
                 </Box>
 
-                {/* レイアウト（縦一列・中央寄せ） */}
+
                 <Flex flexDirection="column" alignItems="center" gap="10" w="full">
-                    {/* 写真エリア */}
                     <Box
                         flexShrink={0}
                         borderRadius="full"
@@ -27,16 +24,13 @@ export default function IntroduceSection() {
                         h={{ base: "180px", md: "240px" }}
                     >
                         <Image
-                            src="/IMG_7219.jpg"
+                            src={profileImage}
                             alt="プロフィール写真"
-                            width={300}
-                            height={300}
                             style={{ objectFit: "cover", width: "100%", height: "100%" }}
                             priority
                         />
                     </Box>
-
-                    {/* テキストエリア */}
+                    
                     <Box w="full">
                         <Heading as="h3" color="brand.text" fontSize="xl" mb="6">
                             Profile
