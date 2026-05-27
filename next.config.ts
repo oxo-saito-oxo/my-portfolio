@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+const nextConfig = {
+  output: 'export',
+  basePath: '/my-portfolio',
+  assetPrefix: '/my-portfolio',
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;
