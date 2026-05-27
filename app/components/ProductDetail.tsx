@@ -1,6 +1,6 @@
 import { Box, Heading, Text, Flex, Image, Tag, Separator, Button } from "@yamada-ui/react"
 import Link from "next/link"
-
+import nextConfig from "../../next.config"
 interface ProductDetailProps {
     title: string;
     summary: string;
@@ -13,8 +13,6 @@ export default function ProductDetail({ title, summary, description, images, tag
     return (
         <Box as="section" bg="#2F2E33" minH="100vh" py="12" w="full">
             <Box maxW="800px" mx="auto" w="full" px="6">
-                
-                {/* 戻るボタン */}
                 <Link href="/" style={{ textDecoration: "none" }}>
                     <Button 
                         variant="ghost" 
@@ -27,14 +25,12 @@ export default function ProductDetail({ title, summary, description, images, tag
                     </Button>
                 </Link>
 
-                {/* セクションタイトル */}
                 <Box borderLeft="4px solid" borderColor="brand.accent" pl="4" mb="12">
                     <Heading as="h2" color="brand.accent" fontSize="2xl" fontWeight="bold" letterSpacing="widest">
                         PRODUCT DETAIL
                     </Heading>
                 </Box>
 
-                {/* 前回の物理レスポンシブロジックを継承 */}
                 <Flex 
                     display="flex"
                     flexDirection="row" 
@@ -43,7 +39,6 @@ export default function ProductDetail({ title, summary, description, images, tag
                     w="full"
                     alignItems="start"
                 >
-                    {/* 文章エリア */}
                     <Box flex="1" minW="300px">
                         <Heading as="h1" color="brand.text" fontSize="4xl" mb="2" fontWeight="bold">
                             {title}
@@ -63,7 +58,6 @@ export default function ProductDetail({ title, summary, description, images, tag
                         </Flex>
                     </Box>
 
-                    {/* 【捲れる画像カルーセル領域】 */}
                     <Box flex="1" minW="300px" w="full">
                         <Box 
                             position="relative"
@@ -74,11 +68,10 @@ export default function ProductDetail({ title, summary, description, images, tag
                             borderColor="whiteAlpha.200"
                             bg="#1a1a1c"
                         >
-                            {/* スクロールコンテナ */}
                             <Flex
                                 overflowX="auto"
                                 css={{
-                                    "scrollSnapType": "x mandatory", // ピタッと止まるロジック
+                                    "scrollSnapType": "x mandatory",
                                     "&::-webkit-scrollbar": { display: "none" },
                                     "scrollbarWidth": "none",
                                 }}
@@ -86,23 +79,22 @@ export default function ProductDetail({ title, summary, description, images, tag
                                 {images.map((src, index) => (
                                     <Box 
                                         key={index} 
-                                        minW="100%" // 1枚がコンテナ全幅を占める
-                                        h="450px" // 画像の高さを固定（齊藤さんの要望：サイズ調整）
+                                        minW="100%" 
+                                        h="450px" 
                                         css={{ "scrollSnapAlign": "center" }}
                                     >
                                         <Image 
-                                            src={src} 
+                                            src={`${nextConfig.basePath || ''}${src}`} 
                                             alt={`${title} screenshot ${index + 1}`}
                                             w="full"
                                             h="full"
-                                            objectFit="contain" // 全体が見えるように調整
+                                            objectFit="contain"
                                             p="4"
                                         />
                                     </Box>
                                 ))}
                             </Flex>
 
-                            {/* 捲れることを視覚的に伝えるドット表示（簡易版） */}
                             {images.length > 1 && (
                                 <Flex 
                                     position="absolute" 
