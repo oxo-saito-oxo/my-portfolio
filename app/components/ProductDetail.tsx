@@ -1,18 +1,22 @@
 import { Box, Heading, Text, Flex, Image, Tag, Separator, Button } from "@yamada-ui/react"
 import Link from "next/link"
 import nextConfig from "../../next.config"
+
 interface ProductDetailProps {
     title: string;
     summary: string;
     description: string;
     images: string[];
     tags: string[];
+    githubUrl?: string;
+    deployUrl?: string;
 }
 
-export default function ProductDetail({ title, summary, description, images, tags }: ProductDetailProps) {
+export default function ProductDetail({ title, summary, description, images, tags, githubUrl, deployUrl }: ProductDetailProps) {
     return (
         <Box as="section" bg="#2F2E33" minH="100vh" py="12" w="full">
             <Box maxW="800px" mx="auto" w="full" px="6">
+                
                 <Link href="/" style={{ textDecoration: "none" }}>
                     <Button 
                         variant="ghost" 
@@ -47,11 +51,49 @@ export default function ProductDetail({ title, summary, description, images, tag
                             {summary}
                         </Text>
                         <Separator borderColor="whiteAlpha.300" mb="6" />
-                        <Box mb="8">
+                        
+                        <Box mb="6">
                             <Heading as="h3" color="brand.text" fontSize="lg" mb="3" fontWeight="bold">Overview</Heading>
                             <Text color="brand.sub" lineHeight="tall">{description}</Text>
                         </Box>
-                        <Flex gap="2" mt="8" flexWrap="wrap">
+
+                        <Flex gap="4" mb="8" flexWrap="wrap">
+                            {githubUrl && (
+                                <Button
+                                    as="a"
+                                    href={githubUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    variant="outline"
+                                    colorScheme="gray"
+                                    borderColor="whiteAlpha.300"
+                                    color="brand.text"
+                                    _hover={{ bg: "whiteAlpha.200" }}
+                                    cursor="pointer"
+                                    size="sm"
+                                >
+                                    GitHubを見る
+                                </Button>
+                            )}
+                            {deployUrl && (
+                                <Button
+                                    as="a"
+                                    href={deployUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    variant="solid"
+                                    bg="brand.accent"
+                                    color="white"
+                                    _hover={{ opacity: 0.9 }}
+                                    cursor="pointer"
+                                    size="sm"
+                                >
+                                    サイトを見に行く
+                                </Button>
+                            )}
+                        </Flex>
+
+                        <Flex gap="2" mt="4" flexWrap="wrap">
                             {tags.map(tech => (
                                 <Tag key={tech} variant="outline" colorScheme="blue" borderRadius="full" px="3">{tech}</Tag>
                             ))}
@@ -88,7 +130,7 @@ export default function ProductDetail({ title, summary, description, images, tag
                                             alt={`${title} screenshot ${index + 1}`}
                                             w="full"
                                             h="full"
-                                            objectFit="contain"
+                                            objectFit="contain" 
                                             p="4"
                                         />
                                     </Box>
